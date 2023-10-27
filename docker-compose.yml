@@ -1,0 +1,48 @@
+version: '3'
+
+x-common: &common # settins for all services
+    image: edis-python:round-9
+    build:
+      dockerfile: ./dockerfiles/python.Dockerfile
+    volumes:
+      - ./app:/home/app
+
+x-dbms: &dbms # settings for dbms nodes
+    <<: *common
+    command: python -B dbms.py
+
+x-client: &client # settings for clients
+    <<: *common
+    command: python -B client.py
+    profiles:
+      - do-not-start-by-default
+
+services:
+
+  # ------------------------------------------------------------------------- # 
+  # dbms nodes                                                                #
+  # ------------------------------------------------------------------------- # 
+  # - docker compose up                                                       #
+  # - docker compose down                                                     #
+  # ------------------------------------------------------------------------- # 
+
+  dbms1:
+    <<: *dbms
+    ports: 
+      - 4000:4000
+    environment:
+      - NODE_ID=1
+
+  dbms2:
+    <<: *dbms
+    environment:
+      - NODE_ID=2
+
+  # ------------------------------------------------------------------------- # 
+  # clients                                                                   #
+  # ------------------------------------------------------------------------- # 
+  # - docker compose run --rm client                                         #
+  # ------------------------------------------------------------------------- # 
+  
+  client:
+    <<: *client

@@ -1,0 +1,9 @@
+POST http://localhost:4000
+content-type: application/json
+
+{
+    "operation": "del", 
+    "key": 5, 
+    "client_id": "abc",
+    "client_counter": 1 
+}
