@@ -9,11 +9,13 @@ x-common: &common # settins for all services
 
 x-dbms: &dbms # settings for dbms nodes
     <<: *common
-    command: python -B dbms.py
+    # command: python -B dbms.py
+    command: python -B dbms.py --review=${REVIEW:-0}
 
 x-client: &client # settings for clients
     <<: *common
-    command: python -B client.py
+    # command: python -B client.py
+    command: python -B client.py --review=${REVIEW:-0}
     profiles:
       - do-not-start-by-default
 
